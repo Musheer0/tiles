@@ -27,6 +27,20 @@ export const appRouter = createTRPCRouter({
         email: input.value
       }
     })
+    }),
+    create_ai : baseProcedure
+    .input(
+      z.object({
+        prompt: z.string()
+      })
+    )
+    .mutation(async({input})=>{
+      await inngest.send({
+        name: 'prod/create-ai',
+        data:{
+          prompt:input.prompt
+        }
+      })
     })
 });
 // export type definition of API
