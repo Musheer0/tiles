@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { baseProcedure, createTRPCRouter } from '../init';
+import { inngest } from '@/inngest/client';
 export const appRouter = createTRPCRouter({
   hello: baseProcedure
     .input(
@@ -12,6 +13,21 @@ export const appRouter = createTRPCRouter({
         greeting: `hello ${opts.input.text}`,
       };
     }),
+    invoke: baseProcedure
+    .input(
+      z.object({
+        value : z.string()
+      })
+    )
+    .mutation(async({input})=>{
+      console.log('hello')
+    await inngest.send({
+      name:'test/hello.world',
+      data:{
+        email: input.value
+      }
+    })
+    })
 });
 // export type definition of API
 export type AppRouter = typeof appRouter;

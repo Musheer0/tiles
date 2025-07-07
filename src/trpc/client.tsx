@@ -55,4 +55,6 @@ export function TRPCProvider(
   );
 }
 
-export const useTrpc = trpc.useUtils().client
+export const useTrpc = () => {
+  return trpc.useUtils().client;
+};
