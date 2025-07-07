@@ -1,0 +1,17 @@
+# This is a config for E2B sandbox template.
+# You can use template ID (wpgixp6f97l4aet1dy20) or template name (tiles-test-1) to create a sandbox:
+
+# Python SDK
+# from e2b import Sandbox, AsyncSandbox
+# sandbox = Sandbox("tiles-test-1") # Sync sandbox
+# sandbox = await AsyncSandbox.create("tiles-test-1") # Async sandbox
+
+# JS SDK
+# import { Sandbox } from 'e2b'
+# const sandbox = await Sandbox.create('tiles-test-1')
+
+team_id = "fa3f12a0-cd25-48f6-ba4c-ad4c9d638208"
+start_cmd = "/compile_page.sh"
+dockerfile = "e2b.Dockerfile"
+template_name = "tiles-test-1"
+template_id = "wpgixp6f97l4aet1dy20"
