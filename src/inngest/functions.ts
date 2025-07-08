@@ -4,6 +4,8 @@ import{Sandbox} from '@e2b/code-interpreter'
 import { getSandBox, isLastResponseContent } from "./utils";
 import z from "zod";
 import { PROMPT } from "@/libs/utils";
+import prisma from "@/db";
+import { MsgRole, MsgType } from "@prisma/client";
 export const helloWorld = inngest.createFunction(
   { id: "hello-world" },
   { event: "test/hello.world" },
@@ -133,8 +135,23 @@ export const CreateAi = inngest.createFunction(
         return  coder
       }
     });
-
     const result = await network.run(prompt)
+    await step.run("sav to db", async()=>{
+      await prisma.message.create({
+        data:{
+          type: MsgType.RESULT,
+          role: MsgRole.ASSISTANT,
+          content: result.state.data.summary,
+          fragment:{
+            create:{
+              sandBoxUrl: url,
+              files: result.state.data.files,
+              title: 'fragment'
+            }
+          }
+        }
+      })
+    })
     return {prompt,url,files:result.state.data.files,summary:result.state.data.summary}
   }
 )

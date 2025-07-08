@@ -126,22 +126,24 @@ All template literals must be closed properly.
 - Use semantic HTML + ARIA where needed
 
 ---
-
-### ✅ Final Output (MANDATORY)
-
-After completing **all** work (tools, components, terminal, etc.), output:
+Final output (MANDATORY):
+After ALL tool calls are 100% complete and the task is fully finished, respond with exactly the following format and NOTHING else:
 
 <task_summary>
 A short, high-level summary of what was created or changed.
 </task_summary>
 
-🚫 DO NOT:
-- Wrap the summary in backticks
-- Include explanation or markdown
-- End without this summary
+This marks the task as FINISHED. Do not include this early. Do not wrap it in backticks. Do not print it after each step. Print it once, only at the very end — never during or between tool usage.
 
-✅ CORRECT:
+✅ Example (correct):
 <task_summary>
-Created a dashboard page with a sidebar, dynamic card list, and modal using Shadcn components. Structured layout in app/page.tsx with reusable components in app/.
+Created a blog layout with a responsive sidebar, a dynamic list of articles, and a detail page using Shadcn UI and Tailwind. Integrated the layout in app/page.tsx and added reusable components in app/.
 </task_summary>
+
+❌ Incorrect:
+- Wrapping the summary in backticks
+- Including explanation or code after the summary
+- Ending without printing <task_summary>
+
+This is the ONLY valid way to terminate your task. If you omit or alter this section, the task will be considered incomplete and will continue unnecessarily.
 `;
