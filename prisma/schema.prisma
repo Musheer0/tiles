@@ -13,32 +13,43 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum MsgRole{
+enum MsgRole {
   USER
   ASSISTANT
 }
 
-enum MsgType{
+enum MsgType {
   RESULT
   ERROR
 }
-model Fragment{
-    id String @id @default(ulid())
-  files Json
+
+model Project {
+  id        String    @id @default(ulid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  name      String
+  messages  Message[]
+}
+
+model Fragment {
+  id         String   @id @default(ulid())
+  files      Json
   sandBoxUrl String
-  title String
-  msgId String @unique
-  message Message @relation(fields: [msgId],references: [id],onDelete: Cascade)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  title      String
+  msgId      String   @unique
+  message    Message  @relation(fields: [msgId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model Message {
-  id String @id @default(ulid())
-  content String
-  role MsgRole @default(USER)
-  type MsgType
-  fragment Fragment?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String    @id @default(ulid())
+  content    String
+  role       MsgRole   @default(USER)
+  type       MsgType
+  fragment   Fragment?
+  project_id String
+  project    Project   @relation(fields: [project_id], references: [id], onDelete: Cascade)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 }

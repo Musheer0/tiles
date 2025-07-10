@@ -135,7 +135,33 @@ export const CreateAi = inngest.createFunction(
         return  coder
       }
     });
-    const result = await network.run(prompt)
+       const title_generator = createAgent({
+      name: 'project title generator',
+      system: 'your an expert at generating short titles for coding project you task is to generate a short meaningfull name for the projects by using the input probided by user return response  with only tilte no greetings or extra stuff needed',
+      description :'an expert coding project title generator',
+      model: gemini({model:'gemini-2.0-flash'}),
+      
+    });
+   const {output} = await title_generator.run(prompt);
+    if(!output[0]?.content) throw new Error("eror generating title");
+    await prisma.project.update({
+      where:{id:event.data.id},
+      data:{
+        name:output[0]?.content
+      }
+    })
+    const result = await network.run(prompt);
+    const isError = 
+    !result.state.data.summary || 
+    Object.keys(result.state.data.files || {}).length===0;
+    if(isError) return  await prisma.message.create({
+      data:{
+        content: 'Something went wrong',
+        role: MsgRole.ASSISTANT,
+        type: MsgType.ERROR,
+        project_id:event.data.id
+      }
+    });
     await step.run("sav to db", async()=>{
       await prisma.message.create({
         data:{
@@ -148,7 +174,8 @@ export const CreateAi = inngest.createFunction(
               files: result.state.data.files,
               title: 'fragment'
             }
-          }
+          },
+          project_id:event.data.id
         }
       })
     })

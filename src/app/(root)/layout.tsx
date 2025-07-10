@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 
 import { TRPCProvider } from "@/trpc/client";
+import Link from "next/link";
+import Image from "next/image";
 
 
 export const metadata: Metadata = {
@@ -15,7 +17,14 @@ export default function RootLayout({
 }>) {
   return (
   <TRPCProvider>
-    <main>{children}</main>
+    <main className="flex flex-col w-full h-full p-2 min-h-screen">
+      <div className="navbar px-4 py-3">
+        <Link href={'/project'} className="flex items-center gap-1">
+        <Image src={'/logo.svg'} width={45} height={40} alt="logo" className="dark:invert"/>
+        <h1 className="text-xl font-bold capitalize">tiles.ai</h1>
+        </Link>
+      </div>
+      {children}</main>
   </TRPCProvider>
   );
 }
